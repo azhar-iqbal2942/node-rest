@@ -10,8 +10,9 @@ const logger = require("./middleware/logger");
 const authentication = require("./middleware/authentication");
 
 const { Environment } = require("./core/enum");
-const courses_route = require("./routes/courses");
-const home_route = require("./routes/home");
+const course_routes = require("./routes/courses");
+const home_routes = require("./routes/home");
+const genre_routes = require("./routes/genres");
 
 const app = express();
 app.set("view engine", "pug");
@@ -26,8 +27,9 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(helmet());
 // Router
-app.use("/api/courses", courses_route);
-app.use("/", home_route);
+app.use("/api/courses", course_routes);
+app.use("/api/genre", genre_routes);
+app.use("/", home_routes);
 
 // Custom
 app.use(logger);
