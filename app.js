@@ -14,6 +14,7 @@ const { Environment } = require("./core/enum");
 const home_routes = require("./routes/home");
 const genre_routes = require("./routes/genres");
 const customer_routes = require("./routes/customers");
+const movie_routes = require("./routes/movies");
 
 const app = express();
 app.set("view engine", "pug");
@@ -33,8 +34,9 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(helmet());
 // Router
-app.use("/api/genre", genre_routes);
-app.use("/api/customer", customer_routes);
+app.use("/api/movies", movie_routes);
+app.use("/api/genres", genre_routes);
+app.use("/api/customers", customer_routes);
 app.use("/", home_routes);
 
 // Custom
