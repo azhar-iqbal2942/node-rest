@@ -13,5 +13,16 @@ function validateGenre(genre) {
   });
   return schema.validate(genre);
 }
-module.exports.validateCourse = validateCourse;
-module.exports.validateGenre = validateGenre;
+
+function validateCustomer(customer) {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+    phone: Joi.string().required(),
+    isGold: Joi.boolean(),
+  });
+  return schema.validate(customer);
+}
+
+exports.validateCourse = validateCourse;
+exports.validateGenre = validateGenre;
+exports.validateCustomer = validateCustomer;
