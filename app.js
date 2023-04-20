@@ -15,6 +15,7 @@ const home_routes = require("./routes/home");
 const genre_routes = require("./routes/genres");
 const customer_routes = require("./routes/customers");
 const movie_routes = require("./routes/movies");
+const rental_routes = require("./routes/rentals");
 
 const app = express();
 app.set("view engine", "pug");
@@ -37,6 +38,7 @@ app.use(helmet());
 app.use("/api/movies", movie_routes);
 app.use("/api/genres", genre_routes);
 app.use("/api/customers", customer_routes);
+app.use("/api/rentals", rental_routes);
 app.use("/", home_routes);
 
 // Custom
