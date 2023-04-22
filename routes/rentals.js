@@ -38,19 +38,21 @@ router.post("/", async (req, res) => {
       dailyRentalRate: movie.dailyRentalRate,
     },
   });
+  rental = await rental.save();
 
   try {
+    // TODO: need to implement two phase commit
     //TODO: There is an error in update need to fix later in this package.
-    new Fawn.Task()
-      .save("rentals", rental)
-      .update(
-        "movies",
-        { _id: movie._id },
-        {
-          $inc: { numberInStock: -1 },
-        }
-      )
-      .run();
+    // new Fawn.Task()
+    //   .save("rentals", rental)
+    //   // .update(
+    //   //   "movies",
+    //   //   { _id: movie._id },
+    //   //   {
+    //   //     $inc: { numberInStock: -1 },
+    //   //   }
+    //   // )
+    //   .run();
     res.send(rental);
   } catch (ex) {
     res.status(500).send("Something failed");
