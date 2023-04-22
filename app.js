@@ -1,5 +1,6 @@
 // Load  ENV variables
 require("dotenv").config();
+const config = require("config");
 // Third party
 const express = require("express");
 const helmet = require("helmet");
@@ -10,7 +11,6 @@ const Joi = require("joi");
 
 // Local
 const logger = require("./middleware/logger");
-const authentication = require("./middleware/authentication");
 
 const { Environment } = require("./core/enum");
 // Routes
@@ -25,7 +25,17 @@ const auth_routes = require("./routes/auth");
 const app = express();
 app.set("view engine", "pug");
 
+if (!config.get("jwt.privateKey")) {
+  console.error("FATAL ERROR: privateKey is not defined");
+  process.exit(1);
+}
 Joi.objectId = require("joi-objectid")(Joi);
+
+/**
+ * ******************
+ * Configure Database
+ * ******************
+ */
 mongoose
   .connect("mongodb://0.0.0.0:27017/vidly")
   .then(() => console.log("Connected to database successfully"))
@@ -41,6 +51,14 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(helmet());
 
+// Custom
+app.use(logger);
+
+/**
+ * *******
+ * Routes
+ * ******
+ */
 // Register Router
 app.use("/api/movies", movie_routes);
 app.use("/api/genres", genre_routes);
@@ -49,10 +67,6 @@ app.use("/api/rentals", rental_routes);
 app.use("/api/users", user_routes);
 app.use("/api/auth/", auth_routes);
 app.use("/", home_routes);
-
-// Custom
-app.use(logger);
-app.use(authentication);
 
 if (app.get("env") === Environment.DEVELOPMENT) {
   app.use(morgan("tiny"));

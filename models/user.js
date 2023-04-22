@@ -1,5 +1,7 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -17,9 +19,13 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    // select: false, if this flag enabled this property not available in db query in response
+    // if this flag enabled this property not available in db query in response
+    // select: false,
   },
 });
+userSchema.methods.generateAuthToken = function () {
+  return jwt.sign({ _id: this._id }, config.get("jwt.privateKey"));
+};
 const User = mongoose.model("User", userSchema);
 
 function validateUser(user) {
