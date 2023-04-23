@@ -33,8 +33,6 @@ if (!config.get("jwt.privateKey")) {
   process.exit(1);
 }
 
-throw new Error("Hello this is error");
-
 /**
  * ******************
  * Configure Database
