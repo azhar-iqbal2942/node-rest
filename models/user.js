@@ -22,9 +22,16 @@ const userSchema = new mongoose.Schema({
     // if this flag enabled this property not available in db query in response
     // select: false,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ _id: this._id }, config.get("jwt.privateKey"));
+  return jwt.sign(
+    { _id: this._id, isAdmin: this.isAdmin },
+    config.get("jwt.privateKey")
+  );
 };
 const User = mongoose.model("User", userSchema);
 

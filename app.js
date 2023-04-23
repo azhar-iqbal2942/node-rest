@@ -1,7 +1,7 @@
 // Load  ENV variables
 require("dotenv").config();
+require("express-async-errors");
 const config = require("config");
-// Third party
 const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -9,10 +9,11 @@ const debug = require("debug")("app:startup");
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-// Local
-const logger = require("./middleware/logger");
+// Middleware
+const error = require("./middleware/error");
 
 const { Environment } = require("./core/enum");
+const logger = require("./core/logger");
 // Routes
 const home_routes = require("./routes/home");
 const genre_routes = require("./routes/genres");
@@ -24,12 +25,15 @@ const auth_routes = require("./routes/auth");
 
 const app = express();
 app.set("view engine", "pug");
+Joi.objectId = require("joi-objectid")(Joi);
 
+// ENV variables check
 if (!config.get("jwt.privateKey")) {
   console.error("FATAL ERROR: privateKey is not defined");
   process.exit(1);
 }
-Joi.objectId = require("joi-objectid")(Joi);
+
+throw new Error("Hello this is error");
 
 /**
  * ******************
@@ -51,9 +55,6 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(helmet());
 
-// Custom
-app.use(logger);
-
 /**
  * *******
  * Routes
@@ -67,6 +68,9 @@ app.use("/api/rentals", rental_routes);
 app.use("/api/users", user_routes);
 app.use("/api/auth/", auth_routes);
 app.use("/", home_routes);
+
+// Error Middleware
+app.use(error);
 
 if (app.get("env") === Environment.DEVELOPMENT) {
   app.use(morgan("tiny"));
