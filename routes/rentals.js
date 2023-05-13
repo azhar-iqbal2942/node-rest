@@ -3,10 +3,10 @@ const { Movies } = require("../models/movie");
 const { Customers } = require("../models/customer");
 
 const express = require("express");
-const Fawn = require("fawn");
+// const Fawn = require("fawn");
 const router = express.Router();
 
-Fawn.init("mongodb://0.0.0.0:27017/vidly");
+// Fawn.init("mongodb://0.0.0.0:27017/vidly");
 
 router.get("/", async (req, res, next) => {
   try {

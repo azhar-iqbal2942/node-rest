@@ -1,4 +1,4 @@
-const logger = require("../core/logger");
+const logger = require("../start/logging");
 
 /**
  * This function handles errors by logging them and sending a 500 status code with a message.

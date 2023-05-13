@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose --detectOpenHandles --coverage"
   },
   "keywords": [],
   "author": "",
@@ -27,5 +27,9 @@
     "pug": "^3.0.2",
     "winston": "^3.8.2",
     "winston-mongodb": "^5.1.1"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
   }
 }

@@ -4,6 +4,7 @@ const winston = require("winston");
  * `winston.transports.MongoDB`
  */
 require("winston-mongodb");
+require("express-async-errors");
 
 /**
  * Log Levels
@@ -38,16 +39,22 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: "logs/error.log", level: "error" }),
     new winston.transports.File({ filename: "logs/combined.log" }),
     // based on requirements change database
-    new winston.transports.MongoDB({
-      db: "mongodb://0.0.0.0:27017/vidly",
+    // new winston.transports.MongoDB({
+    //   db: "mongodb://0.0.0.0:27017/vidly",
+    //   level: "error",
+    // }),
+  ],
+  exceptionHandlers: [
+    new winston.transports.File({
+      filename: "logs/exceptions.log",
       level: "error",
     }),
   ],
-  exceptionHandlers: [
-    new winston.transports.File({ filename: "logs/exceptions.log" }),
-  ],
   rejectionHandlers: [
-    new winston.transports.File({ filename: "logs/rejections.log" }),
+    new winston.transports.File({
+      filename: "logs/rejections.log",
+      level: "error",
+    }),
   ],
 });
 

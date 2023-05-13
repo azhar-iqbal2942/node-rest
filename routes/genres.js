@@ -1,5 +1,6 @@
 const express = require("express");
 const auth = require("../middleware/auth");
+const validateObjectId = require("../middleware/validateObjectId");
 const admin = require("../middleware/admin");
 const asyncMiddleware = require("../middleware/async");
 const router = express.Router();
@@ -61,7 +62,7 @@ router.put("/:id", auth, async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", validateObjectId, async (req, res, next) => {
   try {
     const genre = await Genres.findById(req.params.id);
     if (!genre)
